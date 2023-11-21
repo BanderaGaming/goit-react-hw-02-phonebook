@@ -1,0 +1,8 @@
+.formBox {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 15px;
+}
+p {
+  margin: 0;
+}

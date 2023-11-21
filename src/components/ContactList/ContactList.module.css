@@ -1,0 +1,8 @@
+.contactBox {
+  display: flex;
+  flex-direction: column;
+}
+.contactBox > li {
+  font-size: large;
+  font-weight: 400;
+}

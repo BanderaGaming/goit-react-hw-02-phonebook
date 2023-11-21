@@ -1,0 +1,15 @@
+.formBox {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 5px;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
+  padding: 10px;
+  width: 200px;
+}
+
+.subBtn {
+  border-radius: 20px;
+}
