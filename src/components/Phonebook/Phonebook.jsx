@@ -1,9 +1,9 @@
 import { Component } from 'react';
-import { nanoid } from 'nanoid';
 import { ContactForm } from 'components/ContactForm/ContactForm';
 import { ContactList } from 'components/ContactList/ContactList';
 import { Filter } from 'components/Filter/Filter';
 import css from './Phonebook.module.css';
+import { nanoid } from 'nanoid';
 
 export class Phonebook extends Component {
   state = {
@@ -14,26 +14,30 @@ export class Phonebook extends Component {
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
     filter: '',
-    name: '',
-    number: '',
   };
 
-  onSub = evt => {
-    const ts = this.state;
-    evt.preventDefault();
+  addContact = (name, num) => {
+    const isNameExists = this.state.contacts.some(
+      contact => contact.name.toLowerCase() === name.toLowerCase()
+    );
+
+    if (isNameExists) {
+      alert(`The contact ${name} already exists in the phonebook.`);
+      return;
+    }
+
     this.setState({
       contacts: [
         ...this.state.contacts,
-        { name: ts.name, id: nanoid(), number: ts.number },
+        { name: name, id: nanoid(), number: num },
       ],
     });
-
-    console.log(this.state.contacts);
-    this.setState({ name: ``, number: `` });
   };
 
-  onChange = evt => {
-    this.setState({ [evt.target.name]: evt.target.value });
+  deleteContact = id => {
+    this.setState(prev => ({
+      contacts: prev.contacts.filter(contact => contact.id !== id),
+    }));
   };
 
   handleFilterChange = e => {
@@ -48,23 +52,17 @@ export class Phonebook extends Component {
   };
 
   render() {
-    const { name, number, filter } = this.state;
+    const { filter } = this.state;
     return (
       <div className={css.mainBox}>
         <h1>Phonebook</h1>
-        <ContactForm
-          onSub={this.onSub}
-          onChange={this.onChange}
-          nameValue={name}
-          numValue={number}
-        />
+        <ContactForm onAdd={this.addContact} />
         <h2>Contacts</h2>
         <Filter fvalue={filter} onSearch={this.handleFilterChange} />
 
         <ContactList
           contacts={this.getFilteredContacts()}
-          fvalue={filter}
-          onSearch={this.onSearch}
+          onDel={this.deleteContact}
         />
       </div>
     );

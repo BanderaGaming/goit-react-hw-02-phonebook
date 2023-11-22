@@ -1,8 +1,17 @@
 .contactBox {
   display: flex;
   flex-direction: column;
+  padding-left: 0;
 }
 .contactBox > li {
   font-size: large;
   font-weight: 400;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.contactBox > li > button {
+  height: 20px;
+  border-radius: 20px;
 }
