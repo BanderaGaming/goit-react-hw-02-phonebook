@@ -1,8 +1,9 @@
 import { Component } from 'react';
-import { Section } from 'components/Section/Section';
 import { nanoid } from 'nanoid';
 import { ContactForm } from 'components/ContactForm/ContactForm';
 import { ContactList } from 'components/ContactList/ContactList';
+import { Filter } from 'components/Filter/Filter';
+import css from './Phonebook.module.css';
 
 export class Phonebook extends Component {
   state = {
@@ -18,11 +19,12 @@ export class Phonebook extends Component {
   };
 
   onSub = evt => {
+    const ts = this.state;
     evt.preventDefault();
     this.setState({
       contacts: [
         ...this.state.contacts,
-        { name: this.state.name, id: nanoid(), number: this.state.number },
+        { name: ts.name, id: nanoid(), number: ts.number },
       ],
     });
 
@@ -32,29 +34,37 @@ export class Phonebook extends Component {
 
   onChange = evt => {
     this.setState({ [evt.target.name]: evt.target.value });
-    console.log(evt.target.name);
   };
 
-  onSearch = evt => {};
+  handleFilterChange = e => {
+    this.setState({ ...this.state, filter: e.target.value });
+  };
+
+  getFilteredContacts = () => {
+    const normalizedFilter = this.state.filter.toLowerCase();
+    return this.state.contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter)
+    );
+  };
 
   render() {
-    const { name, number } = this.state;
+    const { name, number, filter } = this.state;
     return (
-      <div>
-        <Section
-          title={`Phonebook`}
-          children={
-            <ContactForm
-              onSub={this.onSub}
-              onChange={this.onChange}
-              nameValue={name}
-              numValue={number}
-            />
-          }
+      <div className={css.mainBox}>
+        <h1>Phonebook</h1>
+        <ContactForm
+          onSub={this.onSub}
+          onChange={this.onChange}
+          nameValue={name}
+          numValue={number}
         />
-        <Section
-          title={`Contacts`}
-          children={<ContactList contacts={this.state.contacts} />}
+        <h2>Contacts</h2>
+        <Filter fvalue={filter} onSearch={this.handleFilterChange} />
+
+        <ContactList
+          contacts={this.getFilteredContacts()}
+          fvalue={filter}
+          onSearch={this.onSearch}
         />
       </div>
     );

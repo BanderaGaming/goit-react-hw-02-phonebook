@@ -1,8 +1,4 @@
-.formBox {
-  display: inline-flex;
-  flex-direction: column;
-  gap: 15px;
-}
-p {
-  margin: 0;
+.mainBox {
+  margin-left: 40px;
+  margin-top: 20px;
 }
